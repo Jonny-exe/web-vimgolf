@@ -1,0 +1,7 @@
+- [] Frontend for all the challenges
+- [] Make one editor with css no mouse events to see the end_code
+- [] Make the other one count only on key-output
+- [] Make leaderboard
+- [] Generate random guest name
+- [] 
+- [] 

@@ -1,0 +1,26 @@
+.App {
+  display: flex;
+  align-items: center;
+}
+
+/* Atributes */
+
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* End atributes */
+
+.levels {
+  width: 100%;
+  height: 100%;
+  padding: 1%;
+}
