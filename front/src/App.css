@@ -1,12 +1,22 @@
 .App {
   display: flex;
   align-items: center;
+  --black: rgb(27, 27, 27);
+  --blue: #006AFF;
+  background-color: var(--black);
+  color: white;
+  height: 100vh;
+  width: 100%;
 }
 
 /* Atributes */
 
 .flex {
   display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .align-center {
@@ -17,10 +27,62 @@
   justify-content: center;
 }
 
+.ignore-pointer-events {
+  pointer-events: none;
+}
+
+.note {
+  margin: 1%;
+  background-color: white;
+  border-radius: .5vmax;
+  color: black;
+  padding: 0 1%;
+}
+
+.error {
+  border: solid .5vmax rgb(255, 84, 84);
+}
+
+.correct {
+  border: solid .5vmax greenyellow;
+}
+
+
+
 /* End atributes */
+
+/* Base */
+
+button {
+  background-color: white;
+  color: black;
+  border: solid 0.5vmax white;
+  padding: 1%;
+  transition-duration: 0.4s;
+  border-radius: .5vmax;
+}
+
+button:hover {
+  border: solid 0.5vmax greenyellow;
+}
+
+button:focus {
+  border: solid 0.5vmax var(--blue);
+}
+
+h1 {
+  padding: 1vmax;
+}
+
+
+/* End base */
 
 .levels {
   width: 100%;
   height: 100%;
   padding: 1%;
+}
+
+.editors {
+  display: flex;
 }
