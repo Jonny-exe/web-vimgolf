@@ -24,16 +24,21 @@ const Levels = () => {
 	}, [])
 
 	return (
-		<div className="levels flex justify-center align-center">
-			{
-				levels.map((item, index) => (
-					<div key={index} onClick={() => setLevel(levels[index])}>
-					{/* // <div key={index} onClick={() => console.log("HELLO")}> */}
-						{item.creator}
-					</div>
-				))
-			}
-		</div>
+		<>
+			<p> Levels </p>
+			<div className="levels flex flex-column justify-center align-center" style={{ height: "30%" }}>
+				{
+					levels.map((item, index) => (
+						<div className="full-width">
+							<div className="full-width margin flex justify-space-around" key={index} onClick={() => setLevel(levels[index])}>
+								<div>{item.name}</div> <div>{item.creator}</div>
+							</div>
+							<hr />
+						</div>
+					))
+				}
+			</div>
+		</>
 	)
 }
 

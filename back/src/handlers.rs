@@ -18,7 +18,7 @@ pub async fn insert_level(db_pool: web::Data<Pool>, json: web::Json<InsertLevel>
     let client: Client = 
         db_pool.get().await.expect("Error connecting to db");
 
-    let result = db::insert_level(&client, json.creator.clone(), json.start_code.clone(), json.end_code.clone()).await;
+    let result = db::insert_level(&client, json.creator.clone(), json.start_code.clone(), json.end_code.clone(), json.name.clone()).await;
 
     match result {
         Ok(levels) => HttpResponse::Ok().json(levels),

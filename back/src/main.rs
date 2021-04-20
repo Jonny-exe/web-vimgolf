@@ -38,6 +38,7 @@ async fn handlePost(request: web::Json<Req>) -> impl Responder {
         end_code: "the end codd".to_string(),
         start_code: "the start code".to_string(),
         id: 1,
+        name: "the name".to_string(),
     })
 }
 

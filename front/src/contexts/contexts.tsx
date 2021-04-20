@@ -6,7 +6,8 @@ const levelExample: Level = {
     end_code: "end_code",
     start_code: "start_code",
     creator: "creator",
-    id: -1
+    id: -1,
+    name: "test"
 }
 
 export const LevelContext = createContext<{

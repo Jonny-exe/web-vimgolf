@@ -16,10 +16,10 @@ pub async fn get_levels(client: &Client) -> Result<Vec<Level>, io::Error> {
     Ok(levels)
 }
 
-pub async fn insert_level(client: &Client, creator: String, end_code: String, start_code: String) -> Result<Level, io::Error> {
-    let statement = client.prepare("insert into levels (creator, end_code, start_code) values ($1, $2, $3) returning id, end_code, start_code, creator").await.unwrap();
+pub async fn insert_level(client: &Client, creator: String, end_code: String, start_code: String, name: String) -> Result<Level, io::Error> {
+    let statement = client.prepare("insert into levels (creator, end_code, start_code, name) values ($1, $2, $3, $4) returning id, end_code, start_code, creator, name").await.unwrap();
 
-    client.query(&statement, &[&creator, &end_code, &start_code])
+    client.query(&statement, &[&creator, &end_code, &start_code, &name])
         .await
         .expect("Error gettin levels")
         .iter()

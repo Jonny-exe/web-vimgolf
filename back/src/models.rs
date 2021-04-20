@@ -8,6 +8,7 @@ pub struct Level {
     pub creator: String,
     pub start_code: String,
     pub end_code: String,
+    pub name: String,
 }
 
 #[derive(Deserialize)]
@@ -15,5 +16,6 @@ pub struct InsertLevel {
     pub creator: String,
     pub end_code: String,
     pub start_code: String,
+    pub name: String,
 }
 
