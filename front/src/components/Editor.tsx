@@ -28,8 +28,8 @@ const Editor: React.FC<Props> = ({ writeable, code, setCode }) => {
 				readOnly={!writeable}
 				highlightActiveLine={true}
 				value={code}
-				width={`${window.innerWidth / 2}px`}
-				height={`${window.innerHeight / 2}px`}
+				// width={`${window.innerWidth / 3}px`}
+				// height={`${window.innerHeight / 1.2}px`}
 				setOptions={{
 					showLineNumbers: true,
 					tabSize: 2,

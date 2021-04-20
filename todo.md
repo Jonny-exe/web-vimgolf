@@ -3,5 +3,5 @@
 - [] Make the other one count only on key-output
 - [] Make leaderboard
 - [] Generate random guest name
-- [] 
+- [] Get the timing
 - [] 
