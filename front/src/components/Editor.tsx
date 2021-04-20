@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AceEditor from 'react-ace'
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -12,19 +12,37 @@ interface Props {
 }
 
 const Editor: React.FC<Props> = ({ writeable, code, setCode }) => {
+	const [focus, setFocus] = useState(true)
 	const handleChange = (value: string) => {
 		setCode(value)
 	}
 
+	const stopPaste = (e: any) => {
+		e.stopPropagation(); e.preventDefault(); console.log(e)
+	}
+
+	useEffect(() => {
+		window.addEventListener("paste", stopPaste , true)
+		return () => {
+			window.removeEventListener("paste", stopPaste , true)
+		}
+	}, [])
+
+	const onClick = () => {
+		setFocus(true)
+	}
+
 	return (
-		<div className={`editor ${!writeable ? "ignore-pointer-events" : ""}`}>
+		<div onClick={onClick} className={`editor`} >
 			<AceEditor
 				placeholder="Placeholder Text"
 				mode="javascript"
 				theme="github"
 				name="hola"
 				onChange={handleChange}
-				focus={writeable}
+				focus={focus}
+				onPaste={() => false}
+				onFocus={() => setFocus(false)}
 				readOnly={!writeable}
 				highlightActiveLine={true}
 				value={code}
