@@ -2,6 +2,7 @@ import React, { createContext } from 'react';
 import { Level } from '../types';
 
 const setLevelFunc = (newConsole: Level) => newConsole;
+const setUsernameFunc = (newConsole: string) => newConsole;
 const levelExample: Level = {
     end_code: "end_code",
     start_code: "start_code",
@@ -14,3 +15,9 @@ export const LevelContext = createContext<{
     level: Level;
     setLevel: (newView: Level) => void;
 }>({ level: levelExample, setLevel: setLevelFunc });
+
+
+export const UsernameContext = createContext<{ username: string, setUsername: (username: string) => void }>({
+    username: "",
+    setUsername: setUsernameFunc
+});

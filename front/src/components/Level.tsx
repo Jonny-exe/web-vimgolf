@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { LevelContext } from '../contexts/contexts'
 import Editor from './Editor'
 import Instructions from './Instructions'

@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import axios from 'axios'
 import { Level } from '../types'
+import { UsernameContext } from '../contexts/contexts'
 interface Props {
-	level: Level
+	level: Level;
 	code: string;
 }
 
 const Instructions: React.FC<Props> = ({ level, code }) => {
+	const { username } = useContext(UsernameContext)
 	const [keyCount, setKeyCount] = useState(0)
 	const increaseKeyCount = () => setKeyCount(prevCount => prevCount + 1)
 	const [codeIsWrong, setCodeIsWrong] = useState<boolean | null>(null)
+
+	const submitScore = () => {
+		axios.post("http://localhost:8080/scores", { challenge_id: level.id, username, score: keyCount })
+	}
 
 	useEffect(() => {
 		window.addEventListener("keydown", increaseKeyCount)
@@ -44,7 +51,8 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 			<p>
 				Key-strokes: {keyCount}
 			</p>
-			<button className="check" onClick={check}>Submit</button>
+			<button className={`check ${codeIsWrong || codeIsWrong === null ? "active" : "hidden"}`} onClick={check}>Check</button>
+			<button className={`check ${!codeIsWrong && codeIsWrong !== null ? "active" : "hidden"}`} onClick={submitScore}>Submit score</button>
 
 			<br />
 			{

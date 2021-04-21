@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { ModalValues } from '../types'
+import { UsernameContext } from '../contexts/contexts'
 import axios from 'axios'
-import { userInfo } from 'node:os'
 
-interface Props {
-	user: string;
-}
-
-const HandleLevels: React.FC<Props> = ({ user }) => {
+const HandleLevels: React.FC = () => {
+	const { username } = useContext(UsernameContext)
 	const [isOverlayActive, setIsOverlayActive] = useState(false)
 	const [modalValues, setModalValues] = useState<ModalValues>({ start_code: "", end_code: "", name: "" })
 
@@ -17,7 +14,7 @@ const HandleLevels: React.FC<Props> = ({ user }) => {
 
 	const submitLevel = () => {
 		const { end_code, start_code, name } = modalValues
-		axios.post("http://localhost:8080/levels", { creator: user, end_code, start_code, name })
+		axios.post("http://localhost:8080/levels", { creator: username, end_code, start_code, name })
 		setIsOverlayActive(false)
 	}
 
