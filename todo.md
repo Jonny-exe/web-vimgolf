@@ -4,4 +4,8 @@
 - [] Make leaderboard
 - [] Generate random guest name
 - [] Get the timing
-- [] 
+- [] Finish get score with post for challenge_id
+- [] Rename all challenge to level
+- [] Add score type
+
+

@@ -42,7 +42,7 @@ const HandleLevels: React.FC = () => {
 				<p>
 					<textarea value={modalValues.end_code} onChange={(e: any) => handleInputChange(e.target.value, "end_code")}></textarea>
 				</p>
-				<button className="invert" onClick={submitLevel}>Submit</button>
+				<button className="normal" onClick={submitLevel}>Submit</button>
 			</div>
 		</>
 	)

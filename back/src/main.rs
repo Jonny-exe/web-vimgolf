@@ -67,8 +67,8 @@ async fn main() -> std::io::Result<()> {
             .route("/post", web::post().to(handlePost))
             .route("/levels{_:/?}", web::get().to(get_levels))
             .route("/levels{_:/?}", web::post().to(insert_level))
-            .route("/scores{_:/?}", web::get().to(get_scores))
             .route("/scores{_:/?}", web::post().to(insert_score))
+            .route("/scores/get{_:/?}", web::post().to(get_scores))
     })
     .bind(format!("{}:{}", config.server.host, config.server.port))?
     .run()

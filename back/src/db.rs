@@ -1,4 +1,4 @@
-use crate::models::{Level, Score};
+use crate::models::{Level, Score, ResponseScore};
 use deadpool_postgres::Client;
 use tokio_pg_mapper::FromTokioPostgresRow;
 use std::io;
@@ -16,15 +16,15 @@ pub async fn get_levels(client: &Client) -> Result<Vec<Level>, io::Error> {
     Ok(levels)
 }
 
-pub async fn get_scores(client: &Client) -> Result<Vec<Score>, io::Error> {
-    let statement = client.prepare("select * from scores").await.unwrap();
+pub async fn get_scores(client: &Client, challenge_id: i32) -> Result<Vec<ResponseScore>, io::Error> {
+    let statement = client.prepare("select score, username from scores where challenge_id = $1").await.unwrap();
 
-    let levels = client.query(&statement, &[])
+    let levels = client.query(&statement, &[&challenge_id])
         .await
         .expect("Error gettin levels")
         .iter()
-        .map(|row| Score::from_row_ref(row).unwrap())
-        .collect::<Vec<Score>>();
+        .map(|row| ResponseScore::from_row_ref(row).unwrap())
+        .collect::<Vec<ResponseScore>>();
 
     Ok(levels)
 }

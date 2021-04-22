@@ -12,9 +12,15 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 	const [keyCount, setKeyCount] = useState(0)
 	const increaseKeyCount = () => setKeyCount(prevCount => prevCount + 1)
 	const [codeIsWrong, setCodeIsWrong] = useState<boolean | null>(null)
+	const [errorSubmiting, setErrorSubmiting] = useState<boolean>(false)
 
-	const submitScore = () => {
-		axios.post("http://localhost:8080/scores", { challenge_id: level.id, username, score: keyCount })
+	const submitScore = async () => {
+		try {
+			await axios.post("http://localhost:8080/scores", { challenge_id: level.id, username, score: keyCount })
+		} catch (err) {
+			console.log(err)
+			setErrorSubmiting(true)
+		}
 	}
 
 	useEffect(() => {
@@ -55,6 +61,9 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 			<button className={`check ${!codeIsWrong && codeIsWrong !== null ? "active" : "hidden"}`} onClick={submitScore}>Submit score</button>
 
 			<br />
+			<div className={`note error ${errorSubmiting ? "active" : "hidden"}`}>
+				An error has occurred trying to submit your score. Please try again later
+			</div>
 			{
 				codeIsWrong === true ?
 					<div className="note error">

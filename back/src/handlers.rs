@@ -1,4 +1,4 @@
-use crate::models::{Level, InsertLevel, InsertScore};
+use crate::models::{Level, InsertLevel, InsertScore, GetScores};
 use crate::db;
 use deadpool_postgres::{Pool, Client};
 use actix_web::{web, Responder, HttpResponse};
@@ -14,11 +14,11 @@ pub async fn get_levels(db_pool: web::Data<Pool>) -> impl Responder {
     }
 }
 
-pub async fn get_scores(db_pool: web::Data<Pool>) -> impl Responder {
+pub async fn get_scores(db_pool: web::Data<Pool>, json: web::Json<GetScores>) -> impl Responder {
     let client: Client = 
         db_pool.get().await.expect("Error connecting to db");
 
-    let result = db::get_scores(&client).await;
+    let result = db::get_scores(&client, json.challenge_id.clone()).await;
     match result {
         Ok(levels) => HttpResponse::Ok().json(levels),
         Err(_) => HttpResponse::InternalServerError().into()

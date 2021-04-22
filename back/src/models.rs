@@ -29,6 +29,18 @@ pub struct InsertLevel {
 }
 
 #[derive(Deserialize)]
+pub struct GetScores {
+    pub challenge_id: i32,
+}
+
+#[derive(Serialize, Deserialize, PostgresMapper)]
+#[pg_mapper(table="todo_list")]
+pub struct ResponseScore {
+    pub score: i32,
+    pub username: String,
+}
+
+#[derive(Deserialize)]
 pub struct InsertScore {
     pub username: String,
     pub challenge_id: i32,
