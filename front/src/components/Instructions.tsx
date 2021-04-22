@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
+import DiffViewer from 'react-diff-viewer'
 import axios from 'axios'
 import { Level } from '../types'
 import { UsernameContext } from '../contexts/contexts'
@@ -13,6 +14,7 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 	const increaseKeyCount = () => setKeyCount(prevCount => prevCount + 1)
 	const [codeIsWrong, setCodeIsWrong] = useState<boolean | null>(null)
 	const [errorSubmiting, setErrorSubmiting] = useState<boolean>(false)
+	const [showDiff, setShowDiff] = useState(false)
 
 	const submitScore = async () => {
 		try {
@@ -53,6 +55,12 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 			<pre className="end-code padding">
 				{level.end_code}
 			</pre>
+
+			<button onClick={() => setShowDiff(true)}>View diff</button>
+			<div className={`modal ${showDiff ? "active" : "hidden"}`}>
+				<DiffViewer newValue={level.start_code} oldValue={level.end_code} />
+			</div>
+			<div onClick={() => setShowDiff(false)} className={`overlay ${showDiff ? "active" : "hidden"}`}></div>
 
 			<p>
 				Key-strokes: {keyCount}

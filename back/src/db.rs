@@ -8,7 +8,7 @@ pub async fn get_levels(client: &Client) -> Result<Vec<Level>, io::Error> {
 
     let levels = client.query(&statement, &[])
         .await
-        .expect("Error gettin levels")
+        .expect("Error getting levels")
         .iter()
         .map(|row| Level::from_row_ref(row).unwrap())
         .collect::<Vec<Level>>();
