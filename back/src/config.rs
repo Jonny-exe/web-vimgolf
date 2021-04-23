@@ -4,6 +4,7 @@ use config::ConfigError;
 pub struct ServerConfig {
     pub host: String,
     pub port: i32,
+    pub allowed_url: String,
 }
 
 
