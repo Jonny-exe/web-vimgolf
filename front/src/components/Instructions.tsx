@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import DiffViewer from 'react-diff-viewer'
+import API_PATH from '../env'
 import axios from 'axios'
 import { Level } from '../types'
 import { UsernameContext } from '../contexts/contexts'
@@ -18,7 +19,7 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 
 	const submitScore = async () => {
 		try {
-			await axios.post("http://localhost:8080/scores", { challenge_id: level.id, username, score: keyCount })
+			await axios.post(`${API_PATH}/scores`, { challenge_id: level.id, username, score: keyCount })
 		} catch (err) {
 			console.log(err)
 			setErrorSubmiting(true)

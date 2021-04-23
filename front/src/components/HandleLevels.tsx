@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { ModalValues } from '../types'
 import { UsernameContext } from '../contexts/contexts'
+import API_PATH from '../env'
 import axios from 'axios'
 
 const HandleLevels: React.FC = () => {
@@ -14,7 +15,7 @@ const HandleLevels: React.FC = () => {
 
 	const submitLevel = () => {
 		const { end_code, start_code, name } = modalValues
-		axios.post("http://localhost:8080/levels", { creator: username, end_code, start_code, name })
+		axios.post(`${API_PATH}/levels` , { creator: username, end_code, start_code, name })
 		setIsOverlayActive(false)
 	}
 

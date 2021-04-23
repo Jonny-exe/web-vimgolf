@@ -106,3 +106,4 @@ dist
 back/target
 
 front/node_modules
+front/src/env.tsx

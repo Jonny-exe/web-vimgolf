@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import API_PATH from '../env'
 import { Level, Score } from '../types'
 
 interface Props {
@@ -13,7 +14,7 @@ const LeaderBoard: React.FC<Props> = ({ level }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const { data } = await axios.post("http://localhost:8080/scores/get", { challenge_id: level.id })
+				const { data } = await axios.post(`${API_PATH}/scores/get`, { challenge_id: level.id })
 				setScores(data)
 			} catch (err) {
 				console.log(err)
