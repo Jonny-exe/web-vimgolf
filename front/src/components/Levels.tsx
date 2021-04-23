@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import API_PATH from '../env'
 import { Level } from '../types'
 import axios from 'axios'
 import { LevelContext } from '../contexts/contexts'
@@ -11,7 +12,7 @@ const Levels = () => {
 
 	const getLevels = async () => {
 		try {
-			const { data } = await axios.get('http://localhost:8080/levels')
+			const { data } = await axios.get(`${API_PATH}/levels`)
 			setLevels(data)
 		} catch (err) {
 			console.log(err)
