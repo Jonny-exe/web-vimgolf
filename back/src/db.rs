@@ -29,7 +29,7 @@ pub async fn get_scores(client: &Client, challenge_id: i32) -> Result<Vec<Respon
     Ok(levels)
 }
 
-pub async fn insert_level(client: &Client, creator: String, end_code: String, start_code: String, name: String) -> Result<Level, io::Error> {
+pub async fn insert_level(client: &Client, creator: String, start_code: String, end_code: String, name: String) -> Result<Level, io::Error> {
     let statement = client.prepare("insert into levels (creator, end_code, start_code, name) values ($1, $2, $3, $4) returning id, end_code, start_code, creator, name").await.unwrap();
 
     client.query(&statement, &[&creator, &end_code, &start_code, &name])
