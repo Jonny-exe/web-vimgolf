@@ -28,6 +28,19 @@ pub async fn get_scores(client: &Client) -> Vec<Score> {
     scores
 }
 
+pub async fn get_scores_by_id(client: &Client, challengeid: i32) -> Vec<Score> {
+    let statement = client.prepare("select * from scores where challengeid = $1").await.unwrap();
+    let scores = client
+        .query(&statement, &[&challengeid])
+        .await
+        .unwrap()
+        .iter()
+        .map(|row| Score::from_row_ref(row).unwrap())
+        .collect::<Vec<Score>>();
+
+    scores
+}
+
 pub async fn insert_level(
     client: &Client,
     creator: String,

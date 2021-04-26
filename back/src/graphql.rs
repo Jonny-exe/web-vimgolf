@@ -2,9 +2,8 @@ use juniper::{EmptyMutation, EmptySubscription, FieldResult, RootNode};
 // use graphql::{EmptyMutation, EmptySubscription, FieldResult, RootNode};
 use crate::db;
 use crate::models::{Level, QContext, Score};
-use deadpool_postgres::{Client};
+use deadpool_postgres::Client;
 impl juniper::Context for QContext {}
-
 
 #[juniper::graphql_object(description = "A level")]
 impl Level {
@@ -62,6 +61,11 @@ impl Query {
     Ok(db::get_scores(&client).await)
   }
 
+  async fn getscoresbyid(context: &QContext, challengeid: i32) -> FieldResult<Vec<Score>> {
+    let client: Client = context.dbpool.get().await?;
+    Ok(db::get_scores_by_id(&client, challengeid).await)
+  }
+
   async fn insertlevel(
     context: &QContext,
     name: String,
@@ -88,13 +92,8 @@ impl Query {
     challengeid: i32,
   ) -> FieldResult<Vec<Score>> {
     let client: Client = context.dbpool.get().await?;
-    let levels: Vec<Score> = db::insert_score(
-      &client,
-      username.to_string(),
-      score,
-      challengeid
-    )
-    .await;
+    let levels: Vec<Score> =
+      db::insert_score(&client, username.to_string(), score, challengeid).await;
     return Ok(levels);
   }
 }

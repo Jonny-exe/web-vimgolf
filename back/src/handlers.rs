@@ -1,7 +1,5 @@
 // use crate::graphql::Schema;
-use crate::models::{Data, QContext, Level};
-use crate::db;
-use deadpool_postgres::{Pool, Client};
+use crate::models::{Data, QContext};
 use actix_web::*;
 // use deadpool_postgres::Pool;
 use juniper::http::GraphQLRequest;
@@ -26,23 +24,4 @@ pub async fn graphql(
     Ok(HttpResponse::Ok()
         .content_type("application/json")
         .body(json))
-}
-
-pub async fn get_levels(db_pool: Pool) -> Vec<Level> {
-    let mut client: Client =
-        db_pool.get().await.expect("Error connecting to db");
-
-    // db::get_levels(&client).await
-
-    vec![Level {
-        id: 1,
-        creator: "hello".to_string(),
-        endcode: "hello".to_string(),
-        startcode: "hello".to_string(),
-        name: "hello".to_string(),
-    }]
-    // match result {
-    //     Ok(levels) => HttpResponse::Ok().json(levels),
-    //     Err(_) => HttpResponse::InternalServerError().into()
-    // }
 }
