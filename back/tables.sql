@@ -2,8 +2,8 @@ CREATE TABLE levels (
     id serial primary key,
     creator varchar,
     name varchar,
-    start_code varchar,
-    end_code varchar
+    startcode varchar,
+    endcode varchar
 );
 
 CREATE TABLE scores (
