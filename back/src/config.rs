@@ -7,7 +7,6 @@ pub struct ServerConfig {
     pub allowed_url: String,
 }
 
-
 #[derive(Deserialize)]
 pub struct Config {
     pub server: ServerConfig,

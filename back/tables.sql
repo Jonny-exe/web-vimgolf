@@ -10,5 +10,5 @@ CREATE TABLE scores (
     id serial primary key,
     score int,
     username varchar,
-    challenge_id int
+    challengeid int
 );

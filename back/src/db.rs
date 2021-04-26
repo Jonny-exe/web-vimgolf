@@ -1,57 +1,76 @@
-use crate::models::{Level, Score, ResponseScore};
+use crate::models::{Level, Score};
 use deadpool_postgres::Client;
 use tokio_pg_mapper::FromTokioPostgresRow;
-use std::io;
 
-pub async fn get_levels(client: &Client) -> Result<Vec<Level>, io::Error> {
+pub async fn get_levels(client: &Client) -> Vec<Level> {
     let statement = client.prepare("select * from levels").await.unwrap();
+    let levels = client
+        .query(&statement, &[])
+        .await
+        .unwrap()
+        .iter()
+        .map(|row| Level::from_row_ref(row).unwrap())
+        .collect::<Vec<Level>>();
 
-    let levels = client.query(&statement, &[])
+    levels
+}
+
+pub async fn get_scores(client: &Client) -> Vec<Score> {
+    let statement = client.prepare("select * from scores").await.unwrap();
+    let scores = client
+        .query(&statement, &[])
+        .await
+        .unwrap()
+        .iter()
+        .map(|row| Score::from_row_ref(row).unwrap())
+        .collect::<Vec<Score>>();
+
+    scores
+}
+
+pub async fn insert_level(
+    client: &Client,
+    creator: String,
+    startcode: String,
+    endcode: String,
+    name: String,
+) -> Vec<Level> {
+    let statement = client.prepare("insert into levels (creator, endcode, startcode, name) values ($1, $2, $3, $4) returning id, endcode, startcode, creator, name").await.unwrap();
+
+    let level = client
+        .query(&statement, &[&creator, &endcode, &startcode, &name])
         .await
         .expect("Error getting levels")
         .iter()
         .map(|row| Level::from_row_ref(row).unwrap())
         .collect::<Vec<Level>>();
-
-    Ok(levels)
+        // .pop()
+        // .ok_or(std::io::Error::new(
+        //     std::io::ErrorKind::Other,
+        //     "Error inserting level",
+        // ));
+    return level;
 }
 
-pub async fn get_scores(client: &Client, challenge_id: i32) -> Result<Vec<ResponseScore>, io::Error> {
-    let statement = client.prepare("select score, username from scores where challenge_id = $1").await.unwrap();
+pub async fn insert_score(
+    client: &Client,
+    username: String,
+    score: i32,
+    challengeid: i32
+) -> Vec<Score> {
+    let statement = client.prepare("insert into scores (username, score, challengeid) values ($1, $2, $3) returning id, username, score, challengeid").await.unwrap();
 
-    let levels = client.query(&statement, &[&challenge_id])
-        .await
-        .expect("Error gettin levels")
-        .iter()
-        .map(|row| ResponseScore::from_row_ref(row).unwrap())
-        .collect::<Vec<ResponseScore>>();
-
-    Ok(levels)
-}
-
-pub async fn insert_level(client: &Client, creator: String, start_code: String, end_code: String, name: String) -> Result<Level, io::Error> {
-    let statement = client.prepare("insert into levels (creator, end_code, start_code, name) values ($1, $2, $3, $4) returning id, end_code, start_code, creator, name").await.unwrap();
-
-    client.query(&statement, &[&creator, &end_code, &start_code, &name])
+    let score = client
+        .query(&statement, &[&username, &score, &challengeid])
         .await
         .expect("Error getting levels")
         .iter()
-        .map(|row| Level::from_row_ref(row).unwrap())
-        .collect::<Vec<Level>>()
-        .pop()
-        .ok_or(io::Error::new(io::ErrorKind::Other, "Error inserting level"))
-
-}
-
-pub async fn insert_score(client: &Client, username: String, score: i32, challenge_id: i32) -> Result<Score, io::Error> {
-    let statement = client.prepare("insert into scores (username, score, challenge_id) values ($1, $2, $3) returning id, username, challenge_id, score").await.unwrap();
-
-    client.query(&statement, &[&username, &score, &challenge_id])
-        .await
-        .expect("Error getting scores")
-        .iter()
         .map(|row| Score::from_row_ref(row).unwrap())
-        .collect::<Vec<Score>>()
-        .pop()
-        .ok_or(io::Error::new(io::ErrorKind::Other, "Error inserting level"))
+        .collect::<Vec<Score>>();
+        // .pop()
+        // .ok_or(std::io::Error::new(
+        //     std::io::ErrorKind::Other,
+        //     "Error inserting level",
+        // ));
+    return score;
 }

@@ -1,50 +1,48 @@
-use crate::models::{Level, InsertLevel, InsertScore, GetScores};
+// use crate::graphql::Schema;
+use crate::models::{Data, QContext, Level};
 use crate::db;
 use deadpool_postgres::{Pool, Client};
-use actix_web::{web, Responder, HttpResponse};
+use actix_web::*;
+// use deadpool_postgres::Pool;
+use juniper::http::GraphQLRequest;
 
-pub async fn get_levels(db_pool: web::Data<Pool>) -> impl Responder {
-    let client: Client = 
-        db_pool.get().await.expect("Error connecting to db");
+pub async fn graphql(
+    data: web::Json<GraphQLRequest>,
+    app_data: web::Data<Data>,
+) -> Result<HttpResponse, Error> {
+    let context = QContext {
+        dbpool: app_data.pool.clone(),
+    };
 
-    let result = db::get_levels(&client).await;
-    match result {
-        Ok(levels) => HttpResponse::Ok().json(levels),
-        Err(_) => HttpResponse::InternalServerError().into()
-    }
+    // let user = web::block(move || {
+    //     let res = data.execute(&app_data.schema, &context);
+    //     Ok::<_, serde_json::error::Error>(serde_json::to_string(&res))
+    // })
+    // .await?;
+
+    let res = data.execute(&app_data.schema, &context).await;
+    let json = serde_json::to_string(&res).map_err(error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Ok()
+        .content_type("application/json")
+        .body(json))
 }
 
-pub async fn get_scores(db_pool: web::Data<Pool>, json: web::Json<GetScores>) -> impl Responder {
-    let client: Client = 
+pub async fn get_levels(db_pool: Pool) -> Vec<Level> {
+    let mut client: Client =
         db_pool.get().await.expect("Error connecting to db");
 
-    let result = db::get_scores(&client, json.challenge_id.clone()).await;
-    match result {
-        Ok(levels) => HttpResponse::Ok().json(levels),
-        Err(_) => HttpResponse::InternalServerError().into()
-    }
-}
+    // db::get_levels(&client).await
 
-pub async fn insert_level(db_pool: web::Data<Pool>, json: web::Json<InsertLevel>) -> impl Responder {
-    let client: Client = 
-        db_pool.get().await.expect("Error connecting to db");
-
-    let result = db::insert_level(&client, json.creator.clone(), json.start_code.clone(), json.end_code.clone(), json.name.clone()).await;
-
-    match result {
-        Ok(levels) => HttpResponse::Ok().json(levels),
-        Err(_) => HttpResponse::InternalServerError().into()
-    }
-}
-
-pub async fn insert_score(db_pool: web::Data<Pool>, json: web::Json<InsertScore>) -> impl Responder {
-    let client: Client = 
-        db_pool.get().await.expect("Error connecting to db");
-
-    let result = db::insert_score(&client, json.username.clone(), json.score.clone(), json.challenge_id.clone()).await;
-
-    match result {
-        Ok(levels) => HttpResponse::Ok().json(levels),
-        Err(_) => HttpResponse::InternalServerError().into()
-    }
+    vec![Level {
+        id: 1,
+        creator: "hello".to_string(),
+        endcode: "hello".to_string(),
+        startcode: "hello".to_string(),
+        name: "hello".to_string(),
+    }]
+    // match result {
+    //     Ok(levels) => HttpResponse::Ok().json(levels),
+    //     Err(_) => HttpResponse::InternalServerError().into()
+    // }
 }
