@@ -1,7 +1,7 @@
 export interface Level {
     creator: string;
-    end_code: string;
-    start_code: string;
+    endcode: string;
+    startcode: string;
     id: number;
     name: string;
 }
@@ -10,7 +10,7 @@ export interface Score {
     score: number;
 }
 export interface ModalValues {
-    start_code: string;
-    end_code: string;
+    startcode: string;
+    endcode: string;
     name: string;
 }

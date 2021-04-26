@@ -7,15 +7,21 @@ import axios from 'axios'
 const HandleLevels: React.FC = () => {
 	const { username } = useContext(UsernameContext)
 	const [isOverlayActive, setIsOverlayActive] = useState(false)
-	const [modalValues, setModalValues] = useState<ModalValues>({ start_code: "", end_code: "", name: "" })
+	const [modalValues, setModalValues] = useState<ModalValues>({ startcode: "", endcode: "", name: "" })
 
 	const addLevel = () => {
 		setIsOverlayActive(true)
 	}
 
 	const submitLevel = () => {
-		const { end_code, start_code, name } = modalValues
-		axios.post(`${API_PATH}/levels` , { creator: username, end_code, start_code, name })
+		const { endcode, startcode, name } = modalValues
+		axios.post(`${API_PATH}/graphql`, {
+			query: `{
+				insertlevel(name: "${name}", creator: "${username}", startcode: "${startcode}", endcode: "${endcode}") {
+					id
+				}
+			}`
+		})
 		setIsOverlayActive(false)
 	}
 
@@ -37,11 +43,11 @@ const HandleLevels: React.FC = () => {
 				</p>
 				2. Add the begging state of the level
 				<p>
-					<textarea value={modalValues.start_code} onChange={(e: any) => handleInputChange(e.target.value, "start_code")}></textarea>
+					<textarea value={modalValues.startcode} onChange={(e: any) => handleInputChange(e.target.value, "startcode")}></textarea>
 				</p>
 				3. Add the end state of the level
 				<p>
-					<textarea value={modalValues.end_code} onChange={(e: any) => handleInputChange(e.target.value, "end_code")}></textarea>
+					<textarea value={modalValues.endcode} onChange={(e: any) => handleInputChange(e.target.value, "endcode")}></textarea>
 				</p>
 				<button className="normal" onClick={submitLevel}>Submit</button>
 			</div>

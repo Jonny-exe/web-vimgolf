@@ -6,7 +6,7 @@ import LeaderBoard from './LeaderBoard'
 
 const Level = () => {
 	const { level } = useContext(LevelContext)
-	const [code, setCode] = useState(level.start_code)
+	const [code, setCode] = useState(level.startcode)
 
 	return (
 		<div className="level flex flex-column align-center jusitfy-center full-width full-height">

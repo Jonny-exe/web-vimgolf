@@ -14,8 +14,16 @@ const LeaderBoard: React.FC<Props> = ({ level }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const { data } = await axios.post(`${API_PATH}/scores/get`, { challenge_id: level.id })
-				setScores(data)
+				const { data: { data } } = await axios.post(`${API_PATH}/graphql`, {
+					query: `{
+						getscoresbyid(challengeid: ${level.id}) {
+							username,
+							score,
+							id
+						}
+					}`
+				})
+				setScores(data['getscoresbyid'])
 			} catch (err) {
 				console.log(err)
 			}

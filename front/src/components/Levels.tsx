@@ -12,8 +12,20 @@ const Levels = () => {
 
 	const getLevels = async () => {
 		try {
-			const { data } = await axios.get(`${API_PATH}/levels`)
-			setLevels(data)
+			let { data: { data } } = await axios.post(`${API_PATH}/graphql`, {
+				query:
+					`{
+							levels {
+								id,
+								name,
+								endcode,
+								startcode,
+								creator
+							}
+						}`
+			})
+
+			setLevels(data['levels'])
 		} catch (err) {
 			console.log(err)
 			setLevels([])

@@ -7,7 +7,7 @@ import { LevelContext, UsernameContext } from './contexts/contexts'
 
 function App() {
 
-  const [level, setLevel] = useState({ id: -1, end_code: "end_code", start_code: "start_code", creator: "creator", name: "test" })
+  const [level, setLevel] = useState({ id: -1, endcode: "endcode", startcode: "startcode", creator: "creator", name: "test" })
   const [username, setUsername] = useState(`guest_${Math.floor(Math.random() * 100000)}`)
 
   return (

@@ -19,7 +19,12 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 
 	const submitScore = async () => {
 		try {
-			await axios.post(`${API_PATH}/scores`, { challenge_id: level.id, username, score: keyCount })
+			await axios.post(`${API_PATH}/graphql`, {
+				query:
+					`{ insertscore(username: \"${username}\",score: ${keyCount}, challengeid: ${level.id}) {
+						id
+					} }`
+			})
 		} catch (err) {
 			console.log(err)
 			setErrorSubmiting(true)
@@ -36,7 +41,7 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 
 	const check = () => {
 		let isCodeWrong
-		if (code === level.end_code) {
+		if (code === level.endcode) {
 			isCodeWrong = false
 		} else {
 			isCodeWrong = true
@@ -49,17 +54,17 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 			<h1 className="instructions-header flex"> <span>Instructions:</span><span>Created by: {level.creator}</span> </h1>
 			Transform this:
 			<pre className="end-code padding">
-				{level.start_code}
+				{level.startcode}
 			</pre>
 			<br />
 			into this:
 			<pre className="end-code padding">
-				{level.end_code}
+				{level.endcode}
 			</pre>
 
 			<button onClick={() => setShowDiff(true)}>View diff</button>
 			<div className={`modal ${showDiff ? "active" : "hidden"}`}>
-				<DiffViewer newValue={level.start_code} oldValue={level.end_code} />
+				<DiffViewer newValue={level.startcode} oldValue={level.endcode} />
 			</div>
 			<div onClick={() => setShowDiff(false)} className={`overlay ${showDiff ? "active" : "hidden"}`}></div>
 
