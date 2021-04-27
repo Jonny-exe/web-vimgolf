@@ -6,10 +6,12 @@ import { Level } from '../types'
 import { UsernameContext } from '../contexts/contexts'
 interface Props {
 	level: Level;
+	setLevel: (newLevel: Level) => void;
 	code: string;
+	setCode: (newCode: string) => void;
 }
 
-const Instructions: React.FC<Props> = ({ level, code }) => {
+const Instructions: React.FC<Props> = ({ level, setLevel, code, setCode }) => {
 	const { username } = useContext(UsernameContext)
 	const [keyCount, setKeyCount] = useState(0)
 	const increaseKeyCount = () => setKeyCount(prevCount => prevCount + 1)
@@ -17,6 +19,20 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 	const [errorSubmiting, setErrorSubmiting] = useState<boolean>(false)
 	const [showDiff, setShowDiff] = useState(false)
 
+	const reset = () => {
+		setCode(level.startcode)
+		setKeyCount(0)
+	}
+
+	const goBack = () => {
+		setLevel({
+			id: -1,
+			startcode: "",
+			endcode: "",
+			creator: "",
+			name: ""
+		})
+	}
 	const submitScore = async () => {
 		try {
 			await axios.post(`${API_PATH}/graphql`, {
@@ -71,10 +87,10 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 			<p>
 				Key-strokes: {keyCount}
 			</p>
+			<br/>
 			<button className={`check ${codeIsWrong || codeIsWrong === null ? "active" : "hidden"}`} onClick={check}>Check</button>
 			<button className={`check ${!codeIsWrong && codeIsWrong !== null ? "active" : "hidden"}`} onClick={submitScore}>Submit score</button>
 
-			<br />
 			<div className={`note error ${errorSubmiting ? "active" : "hidden"}`}>
 				An error has occurred trying to submit your score. Please try again later
 			</div>
@@ -92,6 +108,9 @@ const Instructions: React.FC<Props> = ({ level, code }) => {
 							Good job
 						</div>
 			}
+
+			<button onClick={reset} className="margin-vertical"> Reset </button>
+			<button onClick={goBack} style={{marginBottom: "1%"}}> Back </button>
 		</>
 	)
 }

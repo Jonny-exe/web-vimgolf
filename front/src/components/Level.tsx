@@ -8,16 +8,6 @@ const Level = () => {
 	const { level, setLevel } = useContext(LevelContext)
 	const [code, setCode] = useState(level.startcode)
 
-	const goBack = () => {
-		setLevel({
-			id: -1,
-			startcode: "",
-			endcode: "",
-			creator: "",
-			name: ""
-		})
-	}
-
 	return (
 		<div className="level flex flex-column align-center jusitfy-center full-width full-height">
 			<div className="editors flex">
@@ -25,9 +15,8 @@ const Level = () => {
 					<Editor writeable={true} code={code} setCode={setCode} />
 				</div>
 				<div className="full-width margin">
-					<Instructions level={level} code={code} />
+					<Instructions level={level} setLevel={setLevel} code={code} setCode={setCode} />
 					<LeaderBoard level={level} />
-					<button onClick={goBack} className="margin-vertical"> Back </button>
 				</div>
 			</div>
 		</div>
