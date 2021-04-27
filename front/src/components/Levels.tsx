@@ -39,7 +39,7 @@ const Levels = () => {
 	return (
 		<>
 			<p> Levels </p>
-			<div className="levels flex flex-column justify-center align-center" style={{ height: "30%" }}>
+			<div className="levels flex flex-column align-center" style={{ height: "30%" }}>
 				{
 					levels.map((item, index) => (
 						<div className="full-width">

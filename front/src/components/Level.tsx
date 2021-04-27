@@ -5,8 +5,18 @@ import Instructions from './Instructions'
 import LeaderBoard from './LeaderBoard'
 
 const Level = () => {
-	const { level } = useContext(LevelContext)
+	const { level, setLevel } = useContext(LevelContext)
 	const [code, setCode] = useState(level.startcode)
+
+	const goBack = () => {
+		setLevel({
+			id: -1,
+			startcode: "",
+			endcode: "",
+			creator: "",
+			name: ""
+		})
+	}
 
 	return (
 		<div className="level flex flex-column align-center jusitfy-center full-width full-height">
@@ -16,7 +26,8 @@ const Level = () => {
 				</div>
 				<div className="full-width margin">
 					<Instructions level={level} code={code} />
-					<LeaderBoard level={level}/>
+					<LeaderBoard level={level} />
+					<button onClick={goBack} className="margin-vertical"> Back </button>
 				</div>
 			</div>
 		</div>
