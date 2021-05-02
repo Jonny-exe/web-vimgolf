@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import AceEditor from 'react-ace'
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -9,10 +9,10 @@ interface Props {
 	writeable: boolean;
 	code: string;
 	setCode: (value: string) => void;
+	reset: () => void;
 }
 
-const Editor: React.FC<Props> = ({ writeable, code, setCode }) => {
-	const [focus, setFocus] = useState(true)
+const Editor: React.FC<Props> = ({ reset, writeable, code, setCode }) => {
 	const handleChange = (value: string) => {
 		setCode(value)
 	}
@@ -28,26 +28,18 @@ const Editor: React.FC<Props> = ({ writeable, code, setCode }) => {
 		}
 	}, [])
 
-	const onClick = () => {
-		setFocus(true)
-	}
-
 	return (
-		<div onClick={onClick} className={`editor`} >
+		<div onClick={reset} className={`editor`} >
 			<AceEditor
 				placeholder="Placeholder Text"
 				mode="javascript"
 				theme="github"
 				name="hola"
 				onChange={handleChange}
-				focus={focus}
 				onPaste={() => false}
-				onFocus={() => setFocus(false)}
 				readOnly={!writeable}
 				highlightActiveLine={true}
 				value={code}
-				// width={`${window.innerWidth / 3}px`}
-				// height={`${window.innerHeight / 1.2}px`}
 				setOptions={{
 					showLineNumbers: true,
 					tabSize: 2,

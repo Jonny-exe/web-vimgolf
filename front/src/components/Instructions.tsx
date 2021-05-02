@@ -9,20 +9,18 @@ interface Props {
 	setLevel: (newLevel: Level) => void;
 	code: string;
 	setCode: (newCode: string) => void;
+	keyCount: number;
+	setKeyCount: (newCount: (newNumber: number) => number) => void;
+	reset: () => void;
 }
 
-const Instructions: React.FC<Props> = ({ level, setLevel, code, setCode }) => {
+const Instructions: React.FC<Props> = ({ reset, keyCount, setKeyCount,  level, setLevel, code, setCode }) => {
 	const { username } = useContext(UsernameContext)
-	const [keyCount, setKeyCount] = useState(0)
-	const increaseKeyCount = () => setKeyCount(prevCount => prevCount + 1)
+	const increaseKeyCount = () => setKeyCount((prevCount: number) => prevCount + 1)
 	const [codeIsWrong, setCodeIsWrong] = useState<boolean | null>(null)
 	const [errorSubmiting, setErrorSubmiting] = useState<boolean>(false)
 	const [showDiff, setShowDiff] = useState(false)
 
-	const reset = () => {
-		setCode(level.startcode)
-		setKeyCount(0)
-	}
 
 	const goBack = () => {
 		setLevel({
