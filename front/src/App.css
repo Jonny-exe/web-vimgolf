@@ -165,6 +165,20 @@ pre {
   padding: 1%;
 }
 
+textarea,input {
+  background-color: white;
+  border: 1px solid var(--black);
+  padding: 2%;
+  border-radius: 3px;
+  border-style: solid;
+  box-shadow: none;
+  outline: none;
+}
+
+textarea:focus, input:focus {
+  border-width: 2px;
+  /* box-shadow: 0 0 3px var(--black); */
+}
 
 /* End base */
 
